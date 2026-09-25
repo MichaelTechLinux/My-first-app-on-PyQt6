@@ -4,20 +4,12 @@ from PyQt6.QtWidgets import (
     QHBoxLayout,
     QVBoxLayout,
     QLabel,
+    QFrame,
     QWidget,
     QTableView,
     QApplication
 )
-from PyQt6.QtCore import Qt, QAbstractTableModel
-
-class TableModel(QAbstractTableModel):
-    def __init__(self, data):
-        super().__init__()
-        self._data = data
-
-    def data(self, index, role):
-        if role == Qt.ItemDataRole.DisplayRole:
-            return self._data[index.row()][index.column()]
+from PyQt6.QtCore import Qt
 
 class Queue(QMainWindow):
     def __init__(self):
@@ -29,34 +21,35 @@ class Queue(QMainWindow):
         self.ticketlabel = QLabel("Ticket")
         self.windowlabel = QLabel("Window")
 
-        vlayout = QVBoxLayout()
+        frame = QFrame()
+        frame.setFrameShape(QFrame.Shape.Box)
+        frame.setFrameShadow(QFrame.Shadow.Raised)
+        frame.setLineWidth(2)
 
-        hlayout = QHBoxLayout()
-        hlayout.addWidget(self.ticketlabel)
-        hlayout.addWidget(self.windowlabel)
+        vlayout = QVBoxLayout(frame)
 
-        vlayout.addLayout(hlayout)
+        hlayout1 = QHBoxLayout()
+        hlayout1.addWidget(self.ticketlabel)
+        hlayout1.addWidget(self.windowlabel)
 
-        hlayout = QHBoxLayout()
-        hlayout.addWidget(QLabel("A123"))
-        hlayout.addWidget(QLabel("02"))
+        vlayout.addLayout(hlayout1)
 
-        vlayout.addLayout(hlayout)
+        hlayout2 = QHBoxLayout()
+        hlayout2.addWidget(QLabel("A123"))
+        hlayout2.addWidget(QLabel("02"))
+
+        vlayout.addLayout(hlayout2)
+
+        hlayout3 = QHBoxLayout()
+        hlayout3.addWidget(QLabel("A777"))
+        hlayout3.addWidget(QLabel("03"))
+
+        vlayout.addLayout(hlayout3)
 
         widget = QWidget()
         widget.setLayout(vlayout)
 
-        self.table = QTableView()
-
-        data = [
-            [0, 1],
-            ['a', 'a']
-        ]
-
-        self.model = TableModel(data)
-        self.table.setModel(self.model)
-
-        self.setCentralWidget(self.table)
+        self.setCentralWidget(widget)
 
 app = QApplication([])
 
@@ -64,5 +57,3 @@ window = Queue()
 window.show()
 
 app.exec()
-
-
